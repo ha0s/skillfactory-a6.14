@@ -1,6 +1,6 @@
 // const numDivs = 36; // ???Для чего эта константа???
 const maxHits = 10;
-
+let start = false;
 let hits = 0;
 let antiHits = 0; // Инициализируем переменную промахов
 let firstHitTime = 0;
@@ -29,8 +29,9 @@ function round() {
   $(divSelector).text(hits+1);
   // FIXME: тут надо определять при первом клике firstHitTime
   // ГОТОВО!!!
-  if (hits == 0) {
+  if (start == false) {
     firstHitTime = getTimestamp();
+    start = true;
   }
   
 
@@ -61,9 +62,11 @@ function handleClick(event) {
     hits = hits + 1;
     round();
   } else {
-    antiHits++; // Считаем число промахов
-    $(event.target).addClass("miss"); // Красим квадрат красным в который попали промахнувшись
-    $(event.target).text(antiHits); // Выводим в него текущее значение промахов
+    if (start==true){
+      antiHits++; // Считаем число промахов
+      $(event.target).addClass("miss"); // Красим квадрат красным в который попали промахнувшись
+      $(event.target).text(antiHits); // Выводим в него текущее значение промахов
+    }
   }
   // TODO: как-то отмечать если мы промахнулись? См CSS класс .miss
   // ГОТОВО!!!
@@ -73,7 +76,7 @@ function init() {
   // TODO: заказчик просил отдельную кнопку, запускающую игру а не просто по загрузке
   // ГОТОВО!!!
   $("#button-start").click(function(){
-    if (hits == 0){ // Проверяем что игра уже не запущена
+    if (start == false){ // Проверяем что игра уже не запущена
       round();
     }
   });
